@@ -1,6 +1,6 @@
 ﻿namespace QuizAPI.Models
 {
-    public class GamesResults
+    public class GameResult
     {
         public Guid IdGame { get; set; }
         public Guid IdTeam { get; set; }
