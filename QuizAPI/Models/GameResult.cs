@@ -2,8 +2,9 @@
 {
     public class GameResult
     {
-        public Guid IdGame { get; set; }
-        public Guid IdTeam { get; set; }
-        public int[] PointsInRounds { get; set; }
+        public Guid GameId { get; set; }
+        public Guid TeamId { get; set; }
+        public Team? Team { get; set; }
+        public float[]? PointsInRounds { get; set; }
     }
 }

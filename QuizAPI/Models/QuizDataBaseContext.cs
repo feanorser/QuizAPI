@@ -17,5 +17,13 @@ namespace QuizAPI.Models
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<GameResult> GamesResults { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GameResult>(entity =>
+            {
+                entity.HasKey(e => new { e.GameId, e.TeamId}).HasName("game_result_pkey");
+            });
+        }
     }
 }

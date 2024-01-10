@@ -7,6 +7,7 @@
         public string? Description { get; set; }
         public DateTime DateTime { get; set; }
         public string? GameType {  get; set; }
-        public int Rounds { get; set; }
+        public int RoundsCount { get; set; }
+        public List<GameResult>? Results { get; set; }
     }
 }
