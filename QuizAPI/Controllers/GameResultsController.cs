@@ -20,18 +20,25 @@ namespace QuizAPI.Controllers
             _context = context;
         }
 
-        // GET: api/GameResults
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<GameResult>>> GetGamesResults()
-        //{
-        //    return await _context.GamesResults.ToListAsync();
-        //}
-
         // GET: api/GameResults/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<GameResult>>> GetGameResult(Guid id)
+        [HttpGet("{gameId}")]
+        public async Task<ActionResult<IEnumerable<GameResult>>> GetGameResult(Guid gameId)
         {
-            var gameResult = await _context.GamesResults.Where(gr=> gr.GameId == id).Include(gr=>gr.Team).ToListAsync();
+            var gameResult = await _context.GamesResults.Where(gr=> gr.GameId == gameId).Include(gr=>gr.Team).ToListAsync();
+
+            if (gameResult == null)
+            {
+                return NotFound();
+            }
+
+            return gameResult;
+        }
+
+        // GET: api/GameResults/5/Team/12
+        [HttpGet("{gameId}/Team/{teamId}")]
+        public async Task<ActionResult<GameResult>> GetGamesResult(Guid gameId, Guid teamId)
+        {
+            var gameResult = await _context.GamesResults.FindAsync(gameId, teamId);
 
             if (gameResult == null)
             {
@@ -43,10 +50,10 @@ namespace QuizAPI.Controllers
 
         // PUT: api/GameResults/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGameResult(Guid id, GameResult gameResult)
+        [HttpPut("{gameId}")]
+        public async Task<IActionResult> PutGameResult(Guid gameId, GameResult gameResult)
         {
-            if (id != gameResult.GameId)
+            if (gameId != gameResult.GameId)
             {
                 return BadRequest();
             }
@@ -59,7 +66,7 @@ namespace QuizAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GameResultExists(id))
+                if (!GameResultExists(gameId))
                 {
                     return NotFound();
                 }
@@ -97,11 +104,11 @@ namespace QuizAPI.Controllers
             return CreatedAtAction("GetGameResult", new { id = gameResult.GameId }, gameResult);
         }
 
-        // DELETE: api/GameResults/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGameResult(Guid id)
+        // DELETE: api/GameResults/5/Team/12
+        [HttpDelete("{gameId}/Team/{teamId}")]
+        public async Task<IActionResult> DeleteGameResult(Guid gameId, Guid teamId)
         {
-            var gameResult = await _context.GamesResults.FindAsync(id);
+            var gameResult = await _context.GamesResults.FindAsync(gameId, teamId);
             if (gameResult == null)
             {
                 return NotFound();
