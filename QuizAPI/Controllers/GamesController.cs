@@ -21,10 +21,24 @@ namespace QuizAPI.Controllers
         }
 
         // GET: api/Games
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGames()
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Game>>> GetGames()
+        //{
+        //    return await _context.Games.ToListAsync();
+        //}
+
+        // GET: api/Games/Upcoming
+        [HttpGet("Upcoming")]
+        public async Task<ActionResult<IEnumerable<Game>>> GetUpComingGames()
         {
-            return await _context.Games.ToListAsync();
+            return await _context.Games.Where(g=>g.DateTime > DateTime.UtcNow).ToListAsync();
+        }
+
+        // GET: api/Games/Past
+        [HttpGet("Past")]
+        public async Task<ActionResult<IEnumerable<Game>>> GetPastGames()
+        {
+            return await _context.Games.Where(g => g.DateTime <= DateTime.UtcNow).ToListAsync();
         }
 
         // GET: api/Games/5
