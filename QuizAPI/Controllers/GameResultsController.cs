@@ -9,7 +9,7 @@ using QuizAPI.Models;
 
 namespace QuizAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Games")]
     [ApiController]
     public class GameResultsController : ControllerBase
     {
@@ -20,8 +20,8 @@ namespace QuizAPI.Controllers
             _context = context;
         }
 
-        // GET: api/GameResults/5
-        [HttpGet("{gameId}")]
+        // GET: api/Games/5/Results
+        [HttpGet("{id}/Results")]
         public async Task<ActionResult<IEnumerable<GameResult>>> GetGameResult(Guid gameId)
         {
             var gameResult = await _context.GamesResults.Where(gr=> gr.GameId == gameId).Include(gr=>gr.Team).ToListAsync();
@@ -34,8 +34,8 @@ namespace QuizAPI.Controllers
             return gameResult;
         }
 
-        // GET: api/GameResults/5/Team/12
-        [HttpGet("{gameId}/Team/{teamId}")]
+        // GET: api/Games/5/Results/Team/12
+        [HttpGet("{id}/Results/Team/{teamId}")]
         public async Task<ActionResult<GameResult>> GetGamesResult(Guid gameId, Guid teamId)
         {
             var gameResult = await _context.GamesResults.FindAsync(gameId, teamId);
@@ -48,9 +48,9 @@ namespace QuizAPI.Controllers
             return gameResult;
         }
 
-        // PUT: api/GameResults/5
+        // PUT: api/Games/5/Results
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{gameId}")]
+        [HttpPut("{id}/Results")]
         public async Task<IActionResult> PutGameResult(Guid gameId, GameResult gameResult)
         {
             if (gameId != gameResult.GameId)
@@ -79,9 +79,9 @@ namespace QuizAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/GameResults
+        // POST: api/Games/Results
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Results")]
         public async Task<ActionResult<GameResult>> PostGameResult(GameResult gameResult)
         {
             _context.GamesResults.Add(gameResult);
@@ -104,8 +104,8 @@ namespace QuizAPI.Controllers
             return CreatedAtAction("GetGameResult", new { id = gameResult.GameId }, gameResult);
         }
 
-        // DELETE: api/GameResults/5/Team/12
-        [HttpDelete("{gameId}/Team/{teamId}")]
+        // DELETE: api/Games/5/Results/Team/12
+        [HttpDelete("{id}/Results/Team/{teamId}")]
         public async Task<IActionResult> DeleteGameResult(Guid gameId, Guid teamId)
         {
             var gameResult = await _context.GamesResults.FindAsync(gameId, teamId);

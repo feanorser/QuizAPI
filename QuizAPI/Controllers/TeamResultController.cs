@@ -5,7 +5,7 @@ using QuizAPI.Models;
 
 namespace QuizAPI.Controllers
 {
-    [Route("api/Teams/Results/")]
+    [Route("api/Teams/")]
     [ApiController]
     public class TeamResultsController : ControllerBase
     {
@@ -16,8 +16,8 @@ namespace QuizAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Teams/Results/5
-        [HttpGet("{teamId}")]
+        // GET: api/Teams/5/Results
+        [HttpGet("{id}/Results")]
         public async Task<ActionResult<IEnumerable<GameResult>>> GetGameResult(Guid teamId)
         {
             var gameResult = await _context.GamesResults.Where(gr => gr.TeamId == teamId).Include(gr => gr.Game).ToListAsync();
