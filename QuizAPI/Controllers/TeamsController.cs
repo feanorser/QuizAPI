@@ -41,6 +41,19 @@ namespace QuizAPI.Controllers
             return team;
         }
 
+        [HttpGet("Name/{name}")]
+        public async Task<ActionResult<Team>> GetTeam(String name)
+        {
+            var team = await _context.Teams.Where(t=> t.Name == name.Trim()).FirstOrDefaultAsync();
+
+            if (team == null)
+            {
+                return NotFound();
+            }
+
+            return team;
+        }
+
         // PUT: api/Teams/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

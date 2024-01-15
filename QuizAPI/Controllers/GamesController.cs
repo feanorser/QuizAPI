@@ -20,21 +20,20 @@ namespace QuizAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Games
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Game>>> GetGames()
-        //{
-        //    return await _context.Games.ToListAsync();
-        //}
-
         // GET: api/Games/Upcoming
+        /// <summary>
+        /// Get list of Upcoming games.
+        /// </summary>
+        /// <returns>Games list.</returns>
         [HttpGet("Upcoming")]
         public async Task<ActionResult<IEnumerable<Game>>> GetUpComingGames()
         {
             return await _context.Games.Where(g=>g.DateTime > DateTime.UtcNow).ToListAsync();
         }
-
-        // GET: api/Games/Past
+        /// <summary>
+        /// Get all Past games.
+        /// </summary>
+        /// <returns>Games list.</returns>
         [HttpGet("Past")]
         public async Task<ActionResult<IEnumerable<Game>>> GetPastGames()
         {
@@ -42,6 +41,14 @@ namespace QuizAPI.Controllers
         }
 
         // GET: api/Games/5
+        /// <summary>
+        /// Get Game by it Id.
+        /// </summary>
+        /// <param name="id">Game ID</param>
+        /// <returns>Game object.</returns>
+        /// <response code="200">Game retrieved</response>
+        /// <response code="404">Game not found</response>
+        /// <response code="500">Oops! Can't lookup your game right now</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(Guid id)
         {
@@ -57,6 +64,16 @@ namespace QuizAPI.Controllers
 
         // PUT: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Put Game with provided Id.
+        /// </summary>
+        /// <param name="id">Game Id.</param>
+        /// <param name="game">Game object.</param>
+        /// <returns></returns>
+        /// <response code="204">Game updated</response>
+        /// <response code="400">Provided Id didn't much game.Id object</response>
+        /// <response code="404">Cann't find game to update</response>
+        /// <response code="500">Oops! Can't lookup your game right now</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGame(Guid id, Game game)
         {

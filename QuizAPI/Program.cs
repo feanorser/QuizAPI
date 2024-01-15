@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using QuizAPI.Models;
 using System.Text.Json.Serialization;
 
@@ -13,7 +14,19 @@ builder.Services.AddControllers();
 // });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1",
+        new OpenApiInfo
+        {
+            Title = "Quiz API - V1",
+            Version = "v1"
+        }
+     );
+
+    var filePath = Path.Combine(System.AppContext.BaseDirectory, "QuizAPI.xml");
+    c.IncludeXmlComments(filePath);
+});
 builder.Services.AddDbContext<QuizDataBaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("QuizDataBase")));
 var app = builder.Build();
