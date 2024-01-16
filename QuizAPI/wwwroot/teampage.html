@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Создаем команду.</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div id="app">
+        <h2>Create Team</h2>
+        <form @submit.prevent="createTeam">
+            <label for="teamName">Team Name:</label>
+            <input v-model="teamName" type="text" id="teamName" required>
+            <button type="submit">Create Team</button>
+        </form>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    teamName: "",
+                    generatedGuid: ""
+                };
+            },
+            methods: {
+                createTeam() {
+                    // Validate if teamName is not empty
+                    if (this.teamName.trim() === "") {
+                        alert("Team Name cannot be empty!");
+                        return;
+                    }
+
+                    this.generatedGuid = this.generateGuid();
+                    const postData = {
+                        name: this.teamName,
+                        id: this.generateGuid
+                    };
+                    console.log("Team Name:", this.teamName);
+                    console.log("Generated GUID:", this.generatedGuid);
+                    axios.post('https://localhost:7038/api/Teams', postData)
+                        .then(response => {
+                            // Handle the API response as needed
+                            console.log('API Response:', response.data);                          
+                        })
+                        .catch(error => {
+                            // Handle errors
+                            console.error('API Error:', error);
+                        });
+                    // You can send the data to your API or perform any other actions here
+                },
+                generateGuid() {
+                    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+                        var r = (Math.random() * 16) | 0,
+                            v = c === "x" ? r : (r & 0x3) | 0x8;
+                        return v.toString(16);
+                    });
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

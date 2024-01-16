@@ -69,7 +69,7 @@ namespace QuizAPI.Controllers
         /// </summary>
         /// <param name="id">Game Id.</param>
         /// <param name="game">Game object.</param>
-        /// <returns></returns>
+        /// <returns>No content</returns>
         /// <response code="204">Game updated</response>
         /// <response code="400">Provided Id didn't much game.Id object</response>
         /// <response code="404">Cann't find game to update</response>
@@ -105,6 +105,13 @@ namespace QuizAPI.Controllers
 
         // POST: api/Games
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add new game
+        /// </summary>
+        /// <param name="game">Game object</param>
+        /// <returns>Added game</returns>
+        /// <response code="201">Game added</response>
+        /// <response code="500">Oops! Can't lookup your game right now</response>
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(Game game)
         {
@@ -115,6 +122,14 @@ namespace QuizAPI.Controllers
         }
 
         // DELETE: api/Games/5
+        /// <summary>
+        /// Delete game with provided id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>No content</returns>
+        /// <response code="204">Game deleted</response>
+        /// <response code="404">Game to delete not found</response>
+        /// <response code="500">Oops! Can't lookup your game right now</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(Guid id)
         {
