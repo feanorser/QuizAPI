@@ -42,7 +42,6 @@ namespace QuizAPITest
         {
             var response = await _httpClient.PostAsJsonAsync("", gameTest);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
-
         }
 
         [Test, Order(3)]
