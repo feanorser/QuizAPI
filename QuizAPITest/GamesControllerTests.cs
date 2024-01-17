@@ -38,6 +38,14 @@ namespace QuizAPITest
         }
 
         [Test, Order(2)]
+        public async Task PostSameGame()
+        {
+            var response = await _httpClient.PostAsJsonAsync("", gameTest);
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+
+        }
+
+        [Test, Order(3)]
         public async Task GetGameById()
         {
             var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/{id.ToLower()}");
@@ -48,12 +56,29 @@ namespace QuizAPITest
             Assert.That(loadedGame, Is.EqualTo(gameTest));
         }
 
-        [Test, Order(3)]
+        [Test, Order(4)]
+        public async Task UpdateGameById()
+        {
+            gameTest.Name = "Game test 1";
+            var response = await _httpClient.PutAsJsonAsync($"{_httpClient.BaseAddress}/{id.ToLower()}", gameTest);
+            response.EnsureSuccessStatusCode();
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+
+            response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/{id.ToLower()}");
+            response.EnsureSuccessStatusCode();
+            var loadedGame = await response.Content.ReadFromJsonAsync<Game>();
+            Assert.That(loadedGame, Is.EqualTo(gameTest));
+        }
+
+        [Test, Order(5)]
         public async Task DeleteGameById()
         {
             var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/{id.ToLower()}");
             response.EnsureSuccessStatusCode();
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+
+            response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/{id.ToLower()}");
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
         [TearDown]
