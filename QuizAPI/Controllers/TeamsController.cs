@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizAPI.Models;
+//using FuzzySharp;
 
 namespace QuizAPI.Controllers
 {
@@ -90,6 +92,14 @@ namespace QuizAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Team>> PostTeam(Team team)
         {
+            //Here must be a bit more trickier, because some one can use same team name with spelling 
+            // it using different language signs. If i use something like FuzzySharp i will need to put
+            // all teams in memory thats ok for small amount, but possible doesn't need. In other hand - 
+            // this could be need for bigger set of teams but require another aproach i think.
+            if(_context.Teams.Where(t => t.Name == team.Name.Trim()).Any())
+            {
+                return BadRequest();
+            }
             _context.Teams.Add(team);
             await _context.SaveChangesAsync();
 

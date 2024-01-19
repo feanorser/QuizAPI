@@ -15,6 +15,14 @@ namespace QuizAPITest
             Name = "Team test #1",
             Id = new Guid(id1)
         };
+
+        private const string id2 = "5979B253-34CF-44F0-82DC-1D2C426B4B81";
+        private Team teamTest2 = new Team
+        {
+            Name = "Team test #2",
+            Id = new Guid(id1)
+        };
+
         private const string BaseUrl = "https://localhost:7038/api/teams";
         private HttpClient _httpClient;
 
@@ -40,7 +48,7 @@ namespace QuizAPITest
         public async Task PostSameTeam()
         {
             var response = await _httpClient.PostAsJsonAsync("", teamTest1);
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         }
 
         [Test, Order(3)]
